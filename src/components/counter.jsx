@@ -1,26 +1,15 @@
 import React, { Component } from "react";
 
 class Counter extends Component {
-  state = {
-    count: this.props.counter.value,
-  };
-
   setSpanClasses = () => {
-    const { count } = this.state;
+    const { value: count } = this.props.counter;
     let classes = "badge text-bg-";
     return count === 0 ? (classes += "warning") : (classes += "primary");
   };
 
-  handleIncrement = () => {
-    // this.state.count++; une erreur fatale
-    this.setState({ count: this.state.count + 1 });
-  };
-  handleDecrement = () => {
-    // this.state.count--; une erreur fatale
-    this.setState({ count: this.state.count - 1 });
-  };
   render() {
-    const { count } = this.state;
+    const { value: count, id: counterId } = this.props.counter;
+    const { onDelete, onIncrement, onDecrement } = this.props;
     return (
       <div className="row mb-2 align-items-center">
         <div className="col-1">
@@ -30,21 +19,20 @@ class Counter extends Component {
         </div>
         <div className="col">
           <button
-            onClick={this.handleDecrement}
+            onClick={() => onDecrement(counterId)}
             className="btn btn-sm btn-secondary me-2"
+            disabled={count === 0}
           >
             -
           </button>
           <button
-            onClick={this.handleIncrement}
+            onClick={() => onIncrement(counterId)}
             className="btn btn-sm btn-secondary me-2"
           >
             +
           </button>
           <button
-            onClick={() => {
-              this.props.onDelete(this.props.counter.id);
-            }}
+            onClick={() => onDelete(counterId)}
             className="btn btn-sm btn-danger me-2"
           >
             delete
